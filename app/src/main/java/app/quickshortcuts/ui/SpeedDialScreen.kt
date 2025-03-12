@@ -3,6 +3,7 @@ package app.quickshortcuts.ui
 import ContactInfo
 import ContactPicker
 import android.Manifest
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +45,6 @@ import app.quickshortcuts.SpeedDialNotification.notificationManager
 import app.quickshortcuts.SpeedDialNotification.requestNotificationsPermission
 import app.quickshortcuts.SpeedDialNotification.toggle
 import app.quickshortcuts.core.Utils
-import app.quickshortcuts.core.Utils.showLog
 import app.quickshortcuts.core.clearUserPreference
 import app.quickshortcuts.core.getPreference
 import app.quickshortcuts.core.getUserPreference
@@ -82,7 +82,7 @@ fun SpeedDialScreen() {
 @Composable
 fun ContactInfoScreen() {
     val context = LocalContext.current
-    var isNotificationVisible = context.find()!=null
+    var isNotificationVisible = context.find() != null
     val coroutineScope = rememberCoroutineScope()
     var isChecked by remember { mutableStateOf(false) }
     var isSpeedDialAdded by remember { mutableStateOf(false) }
@@ -101,7 +101,7 @@ fun ContactInfoScreen() {
     ) {
 
         if (contactList.size == 3) {
-            if(!isNotificationVisible){
+            if (!isNotificationVisible) {
                 ElevatedButton(
                     onClick = {
                         context.apply {
@@ -118,7 +118,7 @@ fun ContactInfoScreen() {
                 }
                 HorizontalDivider(Modifier.padding(10.dp))
             }
-            if (!isSpeedDialAdded) {
+            if (!isSpeedDialAdded && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 Text(text = "Add speed dial tile in Quick Settings")
                 Switch(
                     checked = isChecked,
